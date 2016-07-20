@@ -1,3 +1,6 @@
 language: java
 
 script: mvn install -e
+
+notifications:
+  slack: michael1011projects:HdAP2X1OaV0lgF2Ls7FAxaFJ
