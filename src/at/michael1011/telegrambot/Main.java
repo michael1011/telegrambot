@@ -31,14 +31,19 @@ public class Main {
         if(file.exists()) {
             prop = getProperties();
 
-            if(!prop.getProperty(telegramTokenKey, telegramTokenVal).equals(telegramTokenVal)) {
+            String token = prop.getProperty(telegramTokenKey, telegramTokenVal);
+
+            if(!token.equals(telegramTokenVal)) {
+
 
             } else {
+                log.debug("token not changed");
+
                 showInstructions();
             }
 
         } else {
-            log.debug("File not found. Ignore this if this is the first start of the app.");
+            log.debug("file not found");
 
             File f = new File(configName);
 
