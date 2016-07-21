@@ -13,8 +13,8 @@ public class Main {
 
     private static String configName = "config.properties";
 
-    private static final String ANSI_RESET = "\u001B[0m";
-    private static final String ANSI_RED = "\u001B[31m";
+    public static final String ANSI_RESET = "\u001B[0m";
+    public static final String ANSI_RED = "\u001B[31m";
 
     private static Properties prop;
 
@@ -33,7 +33,7 @@ public class Main {
         String telegramTokenVal = "paste your token here";
 
         if(file.exists()) {
-            prop = getProperties();
+            prop = getProperties(configName);
 
             token = prop.getProperty(telegramTokenKey, telegramTokenVal);
 
@@ -43,7 +43,7 @@ public class Main {
                 new GetUpdate();
                 new InputReader();
 
-                log.debug("registered tasks");
+                log.debug("started tasks");
 
             } else {
                 log.debug("token not changed");
@@ -52,7 +52,7 @@ public class Main {
             }
 
         } else {
-            log.debug("file not found");
+            log.debug("config file not found");
 
             File f = new File(configName);
 
@@ -65,7 +65,7 @@ public class Main {
 
             prop.setProperty(telegramTokenKey, telegramTokenVal);
 
-            writeFile();
+            writeFile(configName, prop);
 
             showInstructions();
         }
@@ -81,11 +81,11 @@ public class Main {
         System.out.println();
     }
 
-    private static Properties getProperties() {
+    public static Properties getProperties(String fileName) {
         Properties prop = new Properties();
 
         try {
-            InputStream input = new FileInputStream(configName);
+            InputStream input = new FileInputStream(fileName);
 
             prop.load(input);
 
@@ -99,9 +99,9 @@ public class Main {
 
     }
 
-    private static void writeFile() {
+    public static void writeFile(String fileName, Properties prop) {
         try {
-            OutputStream output = new FileOutputStream(configName);
+            OutputStream output = new FileOutputStream(fileName);
 
             prop.store(output, null);
 

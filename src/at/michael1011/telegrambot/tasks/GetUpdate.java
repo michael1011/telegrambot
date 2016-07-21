@@ -1,15 +1,17 @@
 package at.michael1011.telegrambot.tasks;
 
 import at.michael1011.telegrambot.Main;
+import at.michael1011.telegrambot.commands.Hello;
+import org.joda.time.DateTime;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import javax.net.ssl.HttpsURLConnection;
-import java.io.BufferedInputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
+import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.Properties;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -17,46 +19,82 @@ public class GetUpdate {
 
     private static final String updateUrl = "https://api.telegram.org/bot"+Main.token+"/getUpdates";
 
-    private static String sendMessageUrl = "https://api.telegram.org/bot"+Main.token+"/sendMessage?chat_id=IDR&text=";
-
     private static Timer timer;
 
+    private static final String usedIDsFile = "usedIDs.properties";
+
+    private static Properties prop;
+
+    private static final Logger log = LoggerFactory.getILoggerFactory().getLogger(GetUpdate.class.getName());
+
     public GetUpdate() {
+        prop = new Properties();
+
+        File file = new File(usedIDsFile);
+
+        if(!file.exists()) {
+            try {
+                //noinspection ResultOfMethodCallIgnored
+                file.createNewFile();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+        } else {
+            prop = Main.getProperties(usedIDsFile);
+        }
+
+
         timer = new Timer();
 
         TimerTask task = new TimerTask() {
+
             @Override
             public void run() {
-                try {
-                    URL url = new URL(updateUrl);
+                JSONObject js = getJsonObject(updateUrl);
 
-                    HttpsURLConnection con = (HttpsURLConnection) url.openConnection();
-                    InputStream in = new BufferedInputStream(con.getInputStream());
-
-                    StringBuilder sb = new StringBuilder();
-
-                    int cp;
-
-                    while((cp = in.read()) != -1) {
-                        sb.append((char) cp);
-                    }
-
-                    in.close();
-
-                    JSONObject js = new JSONObject(sb.toString());
-
+                if(js != null) {
                     if(js.getBoolean("ok")) {
                         JSONArray array = js.getJSONArray("result");
 
+                        Boolean added = false;
+
                         for(int i = 0; i < array.length(); i++) {
-                            // todo: add functions here (switch) and add file to put used update_id
+                            // todo: remove update_ids when they are older than 24 hours
+
+                            JSONObject object = array.getJSONObject(i);
+
+                            String updateID = String.valueOf(object.getInt("update_id"));
+
+                            if(prop.getProperty(updateID, null) == null) {
+                                JSONObject message = object.getJSONObject("message");
+                                JSONObject from = message.getJSONObject("from");
+
+                                String text = message.getString("text").toLowerCase();
+
+                                if(text.equals("hello") || text.equals("hi")) {
+                                    log.debug("sending message: 'hello'");
+                                    new Hello(from.getInt("id"), from.getString("first_name"));
+                                }
+
+                                prop.setProperty(updateID, new DateTime().toString());
+
+                                added = true;
+
+                                log.debug("added "+updateID);
+                            }
+
+                        }
+
+                        if(added) {
+                            Main.writeFile(usedIDsFile, prop);
+                            Main.getProperties(usedIDsFile);
                         }
 
                     }
 
-                } catch(IOException e) {
-                    e.printStackTrace();
                 }
+
 
             }
         };
@@ -68,18 +106,61 @@ public class GetUpdate {
         timer.cancel();
     }
 
-    public static void sendText(int id, String text) throws IOException {
-        URL post = new URL((sendMessageUrl+text).replace("IDR", String.valueOf(id)));
+    public static JSONObject getJsonObject(String urlString) {
+        try {
+            URL url = new URL(urlString);
 
-        HttpsURLConnection postCon = (HttpsURLConnection) post.openConnection();
+            HttpURLConnection con = (HttpURLConnection) url.openConnection();
+            InputStream in = new BufferedInputStream(con.getInputStream());
 
-        postCon.setRequestMethod("POST");
-        postCon.setDoOutput(true);
+            StringBuilder sb = new StringBuilder();
 
-        DataOutputStream out = new DataOutputStream(postCon.getOutputStream());
+            int cp;
 
-        out.flush();
-        out.close();
+            while((cp = in.read()) != -1) {
+                sb.append((char) cp);
+            }
+
+            in.close();
+
+            return new JSONObject(sb.toString());
+
+        } catch(IOException e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
+    public static void sendText(int id, String text) {
+        try {
+            String parameters = ("bot"+Main.token+"/sendMessage?chat_id=IDR&text=").replace("IDR" , String.valueOf(id))+
+                    text.replaceAll("\\s", "%20");
+
+            URL post = new URL("https://api.telegram.org/"+parameters);
+
+            HttpURLConnection postCon = (HttpURLConnection) post.openConnection();
+
+            postCon.setRequestMethod("POST");
+            postCon.setDoOutput(true);
+
+
+            BufferedReader in = new BufferedReader(new InputStreamReader(postCon.getInputStream()));
+            String inputLine;
+            StringBuilder response = new StringBuilder();
+
+            while ((inputLine = in.readLine()) != null) {
+                response.append(inputLine);
+            }
+
+            in.close();
+
+            log.debug(response.toString());
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
     }
 
 }
