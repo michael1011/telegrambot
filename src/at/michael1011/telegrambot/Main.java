@@ -1,5 +1,7 @@
 package at.michael1011.telegrambot;
 
+import at.michael1011.telegrambot.tasks.GetUpdate;
+import at.michael1011.telegrambot.tasks.InputReader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.impl.SimpleLogger;
@@ -16,6 +18,8 @@ public class Main {
 
     private static Properties prop;
 
+    public static String token;
+
     public static void main(String[] args) {
         Logger log = LoggerFactory.getILoggerFactory().getLogger(Main.class.getName());
 
@@ -31,10 +35,15 @@ public class Main {
         if(file.exists()) {
             prop = getProperties();
 
-            String token = prop.getProperty(telegramTokenKey, telegramTokenVal);
+            token = prop.getProperty(telegramTokenKey, telegramTokenVal);
 
             if(!token.equals(telegramTokenVal)) {
+                log.debug("token found");
 
+                new GetUpdate();
+                new InputReader();
+
+                log.debug("registered tasks");
 
             } else {
                 log.debug("token not changed");
@@ -65,8 +74,8 @@ public class Main {
 
     private static void showInstructions() {
         System.out.println();
-        System.out.println("You have to "+ANSI_RED+"create a new Telegram bot yourself"+ANSI_RESET+
-                " and paste the token in the "+configName+" file.");
+        System.out.println("You have to " + ANSI_RED + "create a new Telegram bot yourself" + ANSI_RESET +
+                " and paste the token in the " + configName + " file.");
 
         System.out.println("Then you can run this file again.");
         System.out.println();
@@ -82,7 +91,7 @@ public class Main {
 
             input.close();
 
-        } catch(IOException e) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
 
@@ -98,7 +107,7 @@ public class Main {
 
             output.close();
 
-        } catch(IOException e) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
 
