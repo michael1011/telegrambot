@@ -1,5 +1,8 @@
 package at.michael1011.telegrambot.tasks;
 
+import at.michael1011.telegrambot.Main;
+import org.joda.time.DateTime;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -27,7 +30,9 @@ public class InputReader {
                         exit();
 
                     } else {
-                        System.out.println("Didn't find command: "+line);
+                        DateTime date = new DateTime();
+
+                        System.out.println("["+date.toString(Main.formatter)+"] "+"Didn't find command: "+line);
                     }
 
                 } catch (IOException e) {
@@ -38,15 +43,18 @@ public class InputReader {
         };
 
         timer.schedule(task, 500, 500);
-
     }
 
     public static void exit() {
         timer.cancel();
         GetUpdate.cancelTask();
 
-        System.out.println();
-        System.out.println("Exiting. Bye bye!");
+        DateTime date = new DateTime();
+
+        System.out.println("["+date.toString(Main.formatter)+"] ");
+        System.out.println("["+date.toString(Main.formatter)+"] "+"Exiting. Bye bye!");
+
+        System.exit(0);
     }
 
 }

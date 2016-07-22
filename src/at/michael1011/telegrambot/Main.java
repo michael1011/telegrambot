@@ -2,6 +2,9 @@ package at.michael1011.telegrambot;
 
 import at.michael1011.telegrambot.tasks.GetUpdate;
 import at.michael1011.telegrambot.tasks.InputReader;
+import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.impl.SimpleLogger;
@@ -11,16 +14,29 @@ import java.util.Properties;
 
 public class Main {
 
+    // todo: create log file
+    // todo: add date to output
+
     private static String configName = "config.properties";
 
     public static String token;
+
+    public static DateTimeFormatter formatter = DateTimeFormat.forPattern("dd/MM/yyyy HH:mm:ss");
+
+    public static Properties prop;
+
+    public static String autoRestartFileKey = "autoRestartFile";
+    public static String autoRestartFileVal = "Put the name of your restart file here. Without this file the restart command will not work";
+
+    public static String userNameKey = "userName";
+    public static String userNameVal = "If you want that only your Telegram account can send commands put your username here (without the @ char). I recommend it.";
 
     public static void main(String[] args) {
         Logger log = LoggerFactory.getILoggerFactory().getLogger(Main.class.getName());
 
         System.setProperty(SimpleLogger.DEFAULT_LOG_LEVEL_KEY, "INFO");
 
-        Properties prop = new Properties();
+        prop = new Properties();
 
         File file = new File(configName);
 
@@ -38,7 +54,10 @@ public class Main {
                 new GetUpdate();
                 new InputReader();
 
-                System.out.println("Server started");
+                DateTime date = new DateTime();
+
+                System.out.println("["+date.toString(Main.formatter)+"] "+"Server started");
+                System.out.println("["+date.toString(Main.formatter)+"] ");
 
             } else {
                 log.debug("token not changed");
@@ -59,6 +78,8 @@ public class Main {
             }
 
             prop.setProperty(telegramTokenKey, telegramTokenVal);
+            prop.setProperty(autoRestartFileKey, autoRestartFileVal);
+            prop.setProperty(userNameKey, userNameVal);
 
             writeFile(configName, prop);
 
@@ -68,10 +89,12 @@ public class Main {
     }
 
     private static void showInstructions() {
-        System.out.println();
-        System.out.println("You have to create a new Telegram bot yourself and paste the token in the "+configName+" file.");
-        System.out.println("Then you can run this file again.");
-        System.out.println();
+        DateTime date = new DateTime();
+
+        System.out.println("["+date.toString(Main.formatter)+"] ");
+        System.out.println("["+date.toString(Main.formatter)+"] "+"You have to create a new Telegram bot yourself and paste the token in the "+configName+" file.");
+        System.out.println("["+date.toString(Main.formatter)+"] "+"Then you can run this file again.");
+        System.out.println("["+date.toString(Main.formatter)+"] ");
     }
 
     public static Properties getProperties(String fileName) {

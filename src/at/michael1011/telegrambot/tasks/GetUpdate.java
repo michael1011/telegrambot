@@ -74,40 +74,69 @@ public class GetUpdate {
                                 JSONObject message = object.getJSONObject("message");
                                 JSONObject from = message.getJSONObject("from");
 
+                                String configUserName = Main.prop.getProperty(Main.userNameKey);
+                                String userName = from.getString("username");
+
                                 String text = message.getString("text").toLowerCase();
 
-                                System.out.println(from.getString("first_name")+" executed command: '"+text+"'");
+                                DateTime date = new DateTime();
 
-                                switch (text) {
-                                    case "hello":
-                                    case "hi":
-                                        new Hello(from.getInt("id"), from.getString("first_name"));
-
-                                        break;
-
-                                    case "temperature":
-                                    case "temp":
-                                        new Temperature(from.getInt("id"));
-
-                                        break;
-
-                                    case "exit":
-                                    case "close":
-                                        new Exit(from.getInt("id"));
-
-                                        break;
-
-                                    case "restart":
-                                        new Restart(from.getInt("id"));
-
-                                        break;
-                                }
-
-                                prop.setProperty(updateID, new DateTime().toString());
+                                prop.setProperty(updateID, date.toString(Main.formatter));
 
                                 added = true;
 
                                 log.debug("added "+updateID);
+
+                                if(configUserName.equals(userName) ||
+                                        configUserName.equals(Main.userNameVal)) {
+
+                                    System.out.println("["+date.toString(Main.formatter)+"] "+userName+" executed command: '"+text+"'");
+
+                                    switch (text) {
+                                        case "hello":
+                                        case "hi":
+                                            new Hello(from.getInt("id"), from.getString("first_name"));
+
+                                            break;
+
+                                        case "temperature":
+                                        case "temp":
+                                            new Temperature(from.getInt("id"));
+
+                                            break;
+
+                                        case "exit -telegram":
+                                        case "exit -te":
+                                        case "close -telegram":
+                                        case "close -te":
+                                            Main.writeFile(usedIDsFile, prop);
+
+                                            new Exit(from.getInt("id"));
+
+                                            break;
+
+                                        case "restart -telegram":
+                                        case "restart -te":
+                                            // todo: 'restart -te(legram)' to restart this server 'restart' for the Raspberry Pi
+
+                                            Main.writeFile(usedIDsFile, prop);
+
+                                            new Restart(from.getInt("id"));
+
+                                            break;
+
+                                        default:
+                                            // todo: send help
+
+                                            break;
+                                    }
+
+                                } else {
+                                    System.out.println("["+date.toString(Main.formatter)+"] "+userName+" wanted to execute: '"+text+"' (access denied)");
+
+                                    sendText(from.getInt("id"), "Access denied");
+                                }
+
                             }
 
                         }

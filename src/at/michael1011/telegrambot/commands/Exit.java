@@ -6,7 +6,7 @@ import at.michael1011.telegrambot.tasks.InputReader;
 public class Exit {
 
     public Exit(int id) {
-        GetUpdate.sendText(id, "Closing Telegram server");
+        GetUpdate.sendText(id, "closed Telegram server");
 
         InputReader.exit();
     }
