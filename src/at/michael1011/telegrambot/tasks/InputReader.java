@@ -27,7 +27,7 @@ public class InputReader {
                     if(line.equalsIgnoreCase("close") || line.equalsIgnoreCase("exit")) {
                         in.close();
 
-                        exit();
+                        exit(true);
 
                     } else {
                         DateTime date = new DateTime();
@@ -45,7 +45,7 @@ public class InputReader {
         timer.schedule(task, 500, 500);
     }
 
-    public static void exit() {
+    public static void exit(Boolean exit) {
         timer.cancel();
         GetUpdate.cancelTask();
 
@@ -54,7 +54,10 @@ public class InputReader {
         System.out.println("["+date.toString(Main.formatter)+"] ");
         System.out.println("["+date.toString(Main.formatter)+"] "+"Exiting. Bye bye!");
 
-        System.exit(0);
+        if(exit) {
+            System.exit(0);
+        }
+
     }
 
 }

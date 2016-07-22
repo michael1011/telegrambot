@@ -11,8 +11,8 @@ public class Temperature {
         try {
             GetUpdate.sendText(id, String.valueOf(SystemInfo.getCpuTemperature())+" °C");
         } catch (IOException | InterruptedException e) {
-            e.printStackTrace();
             GetUpdate.sendText(id, e.getCause().toString());
+            e.printStackTrace();
         }
 
     }

@@ -1,10 +1,7 @@
 package at.michael1011.telegrambot.tasks;
 
 import at.michael1011.telegrambot.Main;
-import at.michael1011.telegrambot.commands.Exit;
-import at.michael1011.telegrambot.commands.Hello;
-import at.michael1011.telegrambot.commands.Restart;
-import at.michael1011.telegrambot.commands.Temperature;
+import at.michael1011.telegrambot.commands.*;
 import org.joda.time.DateTime;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -60,11 +57,11 @@ public class GetUpdate {
                     if(js.getBoolean("ok")) {
                         JSONArray array = js.getJSONArray("result");
 
-                        Boolean added = false;
-
                         for(int i = 0; i < array.length(); i++) {
                             // todo: remove update_ids when they are older than 24 hours
                             // todo: create help command
+
+                            // todo: 'restart' for the Raspberry Pi
 
                             JSONObject object = array.getJSONObject(i);
 
@@ -83,7 +80,8 @@ public class GetUpdate {
 
                                 prop.setProperty(updateID, date.toString(Main.formatter));
 
-                                added = true;
+                                Main.writeFile(usedIDsFile, prop);
+                                Main.getProperties(usedIDsFile);
 
                                 log.debug("added "+updateID);
 
@@ -105,6 +103,11 @@ public class GetUpdate {
 
                                             break;
 
+                                        case "ram":
+                                            new Ram(from.getInt("id"));
+
+                                            break;
+
                                         case "exit -telegram":
                                         case "exit -te":
                                         case "close -telegram":
@@ -117,8 +120,6 @@ public class GetUpdate {
 
                                         case "restart -telegram":
                                         case "restart -te":
-                                            // todo: 'restart -te(legram)' to restart this server 'restart' for the Raspberry Pi
-
                                             Main.writeFile(usedIDsFile, prop);
 
                                             new Restart(from.getInt("id"));
@@ -139,11 +140,6 @@ public class GetUpdate {
 
                             }
 
-                        }
-
-                        if(added) {
-                            Main.writeFile(usedIDsFile, prop);
-                            Main.getProperties(usedIDsFile);
                         }
 
                     }

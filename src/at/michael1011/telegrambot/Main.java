@@ -15,7 +15,6 @@ import java.util.Properties;
 public class Main {
 
     // todo: create log file
-    // todo: add date to output
 
     private static String configName = "config.properties";
 

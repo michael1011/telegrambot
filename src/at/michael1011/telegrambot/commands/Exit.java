@@ -8,7 +8,7 @@ public class Exit {
     public Exit(int id) {
         GetUpdate.sendText(id, "closed Telegram server");
 
-        InputReader.exit();
+        InputReader.exit(true);
     }
 
 }

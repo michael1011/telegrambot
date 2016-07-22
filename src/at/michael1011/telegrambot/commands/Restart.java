@@ -25,7 +25,7 @@ public class Restart {
             e.printStackTrace();
         }
 
-        InputReader.exit();
+        InputReader.exit(false);
 
     }
 
