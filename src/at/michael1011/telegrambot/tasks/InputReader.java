@@ -1,7 +1,5 @@
 package at.michael1011.telegrambot.tasks;
 
-import at.michael1011.telegrambot.Main;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -10,8 +8,10 @@ import java.util.TimerTask;
 
 public class InputReader {
 
+    private static Timer timer;
+
     public InputReader() {
-        final Timer timer = new Timer();
+        timer = new Timer();
 
         final TimerTask task = new TimerTask() {
             @Override
@@ -24,14 +24,10 @@ public class InputReader {
                     if(line.equalsIgnoreCase("close") || line.equalsIgnoreCase("exit")) {
                         in.close();
 
-                        timer.cancel();
-                        GetUpdate.cancelTask();
-
-                        System.out.println();
-                        System.out.println("Exiting. Bye bye!");
+                        exit();
 
                     } else {
-                        System.out.println("Didn't find command: "+Main.ANSI_RED+line+Main.ANSI_RESET);
+                        System.out.println("Didn't find command: "+line);
                     }
 
                 } catch (IOException e) {
@@ -43,6 +39,14 @@ public class InputReader {
 
         timer.schedule(task, 500, 500);
 
+    }
+
+    public static void exit() {
+        timer.cancel();
+        GetUpdate.cancelTask();
+
+        System.out.println();
+        System.out.println("Exiting. Bye bye!");
     }
 
 }

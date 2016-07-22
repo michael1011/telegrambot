@@ -13,11 +13,6 @@ public class Main {
 
     private static String configName = "config.properties";
 
-    public static final String ANSI_RESET = "\u001B[0m";
-    public static final String ANSI_RED = "\u001B[31m";
-
-    private static Properties prop;
-
     public static String token;
 
     public static void main(String[] args) {
@@ -25,7 +20,7 @@ public class Main {
 
         System.setProperty(SimpleLogger.DEFAULT_LOG_LEVEL_KEY, "INFO");
 
-        prop = new Properties();
+        Properties prop = new Properties();
 
         File file = new File(configName);
 
@@ -43,7 +38,7 @@ public class Main {
                 new GetUpdate();
                 new InputReader();
 
-                log.debug("started tasks");
+                System.out.println("Server started");
 
             } else {
                 log.debug("token not changed");
@@ -74,9 +69,7 @@ public class Main {
 
     private static void showInstructions() {
         System.out.println();
-        System.out.println("You have to " + ANSI_RED + "create a new Telegram bot yourself" + ANSI_RESET +
-                " and paste the token in the " + configName + " file.");
-
+        System.out.println("You have to create a new Telegram bot yourself and paste the token in the "+configName+" file.");
         System.out.println("Then you can run this file again.");
         System.out.println();
     }

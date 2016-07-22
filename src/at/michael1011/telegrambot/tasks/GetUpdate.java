@@ -1,7 +1,10 @@
 package at.michael1011.telegrambot.tasks;
 
 import at.michael1011.telegrambot.Main;
+import at.michael1011.telegrambot.commands.Exit;
 import at.michael1011.telegrambot.commands.Hello;
+import at.michael1011.telegrambot.commands.Restart;
+import at.michael1011.telegrambot.commands.Temperature;
 import org.joda.time.DateTime;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -61,6 +64,7 @@ public class GetUpdate {
 
                         for(int i = 0; i < array.length(); i++) {
                             // todo: remove update_ids when they are older than 24 hours
+                            // todo: create help command
 
                             JSONObject object = array.getJSONObject(i);
 
@@ -72,9 +76,31 @@ public class GetUpdate {
 
                                 String text = message.getString("text").toLowerCase();
 
-                                if(text.equals("hello") || text.equals("hi")) {
-                                    log.debug("sending message: 'hello'");
-                                    new Hello(from.getInt("id"), from.getString("first_name"));
+                                System.out.println(from.getString("first_name")+" executed command: 'exit'");
+
+                                switch (text) {
+                                    case "hello":
+                                    case "hi":
+                                        new Hello(from.getInt("id"), from.getString("first_name"));
+
+                                        break;
+
+                                    case "temperature":
+                                    case "temp":
+                                        new Temperature(from.getInt("id"));
+
+                                        break;
+
+                                    case "exit":
+                                    case "close":
+                                        new Exit(from.getInt("id"));
+
+                                        break;
+
+                                    case "restart":
+                                        new Restart(from.getInt("id"));
+                                        
+                                        break;
                                 }
 
                                 prop.setProperty(updateID, new DateTime().toString());
