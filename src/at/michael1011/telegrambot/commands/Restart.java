@@ -10,7 +10,7 @@ public class Restart {
         new Exit(id);
 
         try {
-            Process p = Runtime.getRuntime().exec("./AutoRestart");
+            Process p = Runtime.getRuntime().exec("./AutoRestart.sh");
 
             GetUpdate.sendText(id, "restarted server");
 

@@ -76,7 +76,7 @@ public class GetUpdate {
 
                                 String text = message.getString("text").toLowerCase();
 
-                                System.out.println(from.getString("first_name")+" executed command: 'exit'");
+                                System.out.println(from.getString("first_name")+" executed command: '"+text+"'");
 
                                 switch (text) {
                                     case "hello":
@@ -99,7 +99,7 @@ public class GetUpdate {
 
                                     case "restart":
                                         new Restart(from.getInt("id"));
-                                        
+
                                         break;
                                 }
 
