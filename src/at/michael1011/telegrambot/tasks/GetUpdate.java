@@ -1,9 +1,7 @@
 package at.michael1011.telegrambot.tasks;
 
 import at.michael1011.telegrambot.Main;
-import at.michael1011.telegrambot.commands.*;
-import org.joda.time.DateTime;
-import org.json.JSONArray;
+import at.michael1011.telegrambot.runnables.GetUpdateRun;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,15 +15,16 @@ import java.util.TimerTask;
 
 public class GetUpdate {
 
-    private static final String updateUrl = "https://api.telegram.org/bot"+Main.token+"/getUpdates";
+    public static final String updateUrl = "https://api.telegram.org/bot"+Main.token+"/getUpdates";
+
+    public static final String usedIDsFile = "usedIDs.properties";
+    public static Properties prop;
 
     private static Timer timer;
 
-    private static final String usedIDsFile = "usedIDs.properties";
+    public static Boolean finished = true;
 
-    private static Properties prop;
-
-    private static final Logger log = LoggerFactory.getILoggerFactory().getLogger(GetUpdate.class.getName());
+    public static final Logger log = LoggerFactory.getILoggerFactory().getLogger(GetUpdate.class.getName());
 
     public GetUpdate() {
         prop = new Properties();
@@ -44,113 +43,22 @@ public class GetUpdate {
             prop = Main.getProperties(usedIDsFile);
         }
 
-
         timer = new Timer();
 
         TimerTask task = new TimerTask() {
-
             @Override
             public void run() {
-                JSONObject js = getJsonObject(updateUrl);
+                if(finished) {
+                    finished = false;
 
-                if(js != null) {
-                    if(js.getBoolean("ok")) {
-                        JSONArray array = js.getJSONArray("result");
-
-                        for(int i = 0; i < array.length(); i++) {
-                            // todo: remove update_ids when they are older than 24 hours
-                            // todo: create help command
-
-                            // todo: 'restart' for the Raspberry Pi
-
-                            JSONObject object = array.getJSONObject(i);
-
-                            String updateID = String.valueOf(object.getInt("update_id"));
-
-                            if(prop.getProperty(updateID, null) == null) {
-                                JSONObject message = object.getJSONObject("message");
-                                JSONObject from = message.getJSONObject("from");
-
-                                String configUserName = Main.prop.getProperty(Main.userNameKey);
-                                String userName = from.getString("username");
-
-                                String text = message.getString("text").toLowerCase();
-
-                                DateTime date = new DateTime();
-
-                                prop.setProperty(updateID, date.toString(Main.formatter));
-
-                                Main.writeFile(usedIDsFile, prop);
-                                Main.getProperties(usedIDsFile);
-
-                                log.debug("added "+updateID);
-
-                                if(configUserName.equals(userName) ||
-                                        configUserName.equals(Main.userNameVal)) {
-
-                                    System.out.println("["+date.toString(Main.formatter)+"] "+userName+" executed command: '"+text+"'");
-
-                                    switch (text) {
-                                        case "hello":
-                                        case "hi":
-                                            new Hello(from.getInt("id"), from.getString("first_name"));
-
-                                            break;
-
-                                        case "temperature":
-                                        case "temp":
-                                            new Temperature(from.getInt("id"));
-
-                                            break;
-
-                                        case "ram":
-                                            new Ram(from.getInt("id"));
-
-                                            break;
-
-                                        case "exit -telegram":
-                                        case "exit -te":
-                                        case "close -telegram":
-                                        case "close -te":
-                                            Main.writeFile(usedIDsFile, prop);
-
-                                            new Exit(from.getInt("id"));
-
-                                            break;
-
-                                        case "restart -telegram":
-                                        case "restart -te":
-                                            Main.writeFile(usedIDsFile, prop);
-
-                                            new Restart(from.getInt("id"));
-
-                                            break;
-
-                                        default:
-                                            // todo: send help
-
-                                            break;
-                                    }
-
-                                } else {
-                                    System.out.println("["+date.toString(Main.formatter)+"] "+userName+" wanted to execute: '"+text+"' (access denied)");
-
-                                    sendText(from.getInt("id"), "Access denied");
-                                }
-
-                            }
-
-                        }
-
-                    }
-
+                    GetUpdateRun.run();
                 }
-
-
             }
+
         };
 
         timer.schedule(task, 1000, 1000);
+
     }
 
     static void cancelTask() {
@@ -185,7 +93,8 @@ public class GetUpdate {
 
     public static void sendText(int id, String text) {
         try {
-            String parameters = ("bot"+Main.token+"/sendMessage?chat_id=IDR&text=").replace("IDR" , String.valueOf(id))+
+            String parameters = ("bot"+Main.token+"/sendMessage?chat_id=IDR&parse_mode=HTML&text=").
+                    replace("IDR" , String.valueOf(id))+
                     text.replaceAll("\\s", "%20");
 
             URL post = new URL("https://api.telegram.org/"+parameters);

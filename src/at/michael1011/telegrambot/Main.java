@@ -14,8 +14,6 @@ import java.util.Properties;
 
 public class Main {
 
-    // todo: create log file
-
     private static String configName = "config.properties";
 
     public static String token;
