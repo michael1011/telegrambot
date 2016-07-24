@@ -18,7 +18,7 @@ public class Ram {
             GetUpdate.sendText(id, "Free RAM = "+free+" MB%0AUsed RAM = "+used+" MB%0AUsage = "+
                     usage.substring(2, 4)+"%");
 
-        } catch (IOException | InterruptedException e) {
+        } catch(IOException | InterruptedException e) {
             GetUpdate.sendText(id, e.getCause().toString());
             e.printStackTrace();
         }

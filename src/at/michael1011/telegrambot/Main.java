@@ -14,6 +14,8 @@ import java.util.Properties;
 
 public class Main {
 
+    public final static String version = "0.1-alpha";
+
     private static String configName = "config.properties";
 
     public static String token;

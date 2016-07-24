@@ -1,11 +1,3 @@
-at\michael1011\telegrambot\Main.class
-at\michael1011\telegrambot\tasks\GetUpdate.class
-at\michael1011\telegrambot\runnables\GetUpdateRun.class
-at\michael1011\telegrambot\commands\Restart.class
-at\michael1011\telegrambot\tasks\GetUpdate$1.class
-at\michael1011\telegrambot\commands\Ram.class
-at\michael1011\telegrambot\tasks\InputReader$1.class
-at\michael1011\telegrambot\tasks\InputReader.class
-at\michael1011\telegrambot\commands\Hello.class
-at\michael1011\telegrambot\commands\Exit.class
-at\michael1011\telegrambot\commands\Temperature.class
+at/michael1011/telegrambot/commands/Java.class
+at/michael1011/telegrambot/commands/Network.class
+at/michael1011/telegrambot/commands/Version.class

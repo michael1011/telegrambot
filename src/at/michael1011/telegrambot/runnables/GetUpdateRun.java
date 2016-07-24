@@ -52,21 +52,34 @@ public class GetUpdateRun {
 
                             System.out.println("["+date.toString(Main.formatter)+"] "+userName+" executed command: '"+text+"'");
 
+                            int id = from.getInt("id");
+
                             switch(text) {
                                 case "hello":
                                 case "hi":
-                                    new Hello(from.getInt("id"), from.getString("first_name"));
+                                    new Hello(id, from.getString("first_name"));
 
                                     break;
 
                                 case "temperature":
                                 case "temp":
-                                    new Temperature(from.getInt("id"));
+                                    new Temperature(id);
 
                                     break;
 
                                 case "ram":
-                                    new Ram(from.getInt("id"));
+                                    new Ram(id);
+
+                                    break;
+
+                                case "java":
+                                    new Java(id);
+
+                                    break;
+
+                                case "version":
+                                case "v":
+                                    new Version(id);
 
                                     break;
 
@@ -76,7 +89,7 @@ public class GetUpdateRun {
                                 case "close -te":
                                     Main.writeFile(usedIDsFile, prop);
 
-                                    new Exit(from.getInt("id"));
+                                    new Exit(id);
 
                                     break;
 
@@ -84,12 +97,12 @@ public class GetUpdateRun {
                                 case "restart -te":
                                     Main.writeFile(usedIDsFile, prop);
 
-                                    new Restart(from.getInt("id"));
+                                    new Restart(id);
 
                                     break;
 
                                 default:
-                                    sendText(from.getInt("id"), "Command <b>"+text+"</b> not found. %0AWrite <i>help</i> to get a list of all commands.'");
+                                    sendText(id, "Command <b>"+text+"</b> not found. %0AWrite <i>help</i> to get a list of all commands.'");
 
                                     break;
                             }
