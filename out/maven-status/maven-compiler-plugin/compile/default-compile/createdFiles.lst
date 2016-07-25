@@ -2,6 +2,8 @@ at/michael1011/telegrambot/commands/Java.class
 at/michael1011/telegrambot/commands/Cpu.class
 at/michael1011/telegrambot/commands/RBash.class
 at/michael1011/telegrambot/runnables/ClearIDs.class
+at/michael1011/telegrambot/commands/Shutdown.class
 at/michael1011/telegrambot/commands/Bash.class
 at/michael1011/telegrambot/commands/Version.class
+at/michael1011/telegrambot/commands/Reboot.class
 at/michael1011/telegrambot/Main$1.class

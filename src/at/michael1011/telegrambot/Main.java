@@ -17,7 +17,7 @@ import java.util.TimerTask;
 
 public class Main {
 
-    public final static String version = "0.2-alpha";
+    public final static String version = "1.0.0";
 
     private static String configName = "config.properties";
 

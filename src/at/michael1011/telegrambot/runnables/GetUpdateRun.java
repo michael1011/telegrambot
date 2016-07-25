@@ -15,6 +15,8 @@ public class GetUpdateRun {
 
     private static String command = null;
 
+    private static Boolean shutdown = false, reboot = false;
+
     public static void run() {
         JSONObject js = GetUpdate.getJsonObject(updateUrl);
 
@@ -24,8 +26,6 @@ public class GetUpdateRun {
 
                 for(int i = 0; i < array.length(); i++) {
                     // todo: create help command
-
-                    // todo: 'restart' for the Raspberry Pi
 
                     JSONObject object = array.getJSONObject(i);
 
@@ -61,6 +61,24 @@ public class GetUpdateRun {
 
                                 command = null;
 
+                            } else if(shutdown) {
+                                Main.writeFile(usedIDsFile, prop);
+
+                                sendText(id, "Shutting down server");
+
+                                new Shutdown(text.getBytes(StandardCharsets.UTF_8));
+
+                                shutdown = false;
+
+                            } else if(reboot) {
+                                Main.writeFile(usedIDsFile, prop);
+
+                                sendText(id, "Rebooting server");
+
+                                new Reboot(text.getBytes(StandardCharsets.UTF_8));
+
+                                reboot = false;
+
                             } else {
                                 if(textLower.length() > 4) {
                                     if(textLower.substring(0, 4).equals("bash")) {
@@ -69,8 +87,8 @@ public class GetUpdateRun {
                                     } else if(textLower.substring(0, 5).equals("rbash")) {
                                         String password = Main.prop.getProperty(Main.rootPasswordKey);
 
-                                        if(!password.equals(Main.rootPasswordVal)) {
-                                            new RBash(id, text.substring(6), text.getBytes(StandardCharsets.UTF_8));
+                                        if(!Main.prop.getProperty(Main.rootPasswordKey).equals(Main.rootPasswordVal)) {
+                                            new RBash(id, text.substring(6), password.getBytes(StandardCharsets.UTF_8));
 
                                         } else {
                                             command = text.substring(6);
@@ -141,21 +159,58 @@ public class GetUpdateRun {
 
                 break;
 
-            case "exit -telegram":
-            case "exit -te":
-            case "close -telegram":
-            case "close -te":
+            case "exit":
+            case "close":
                 Main.writeFile(usedIDsFile, prop);
 
                 new Exit(id);
 
                 break;
 
-            case "restart -telegram":
-            case "restart -te":
+            case "restart":
                 Main.writeFile(usedIDsFile, prop);
 
                 new Restart(id);
+
+                break;
+
+            case "shutdown":
+                String password = Main.prop.getProperty(Main.rootPasswordKey);
+
+                if(!password.equals(Main.rootPasswordVal)) {
+                    Main.writeFile(usedIDsFile, prop);
+
+                    sendText(id, "Shutting down server");
+
+                    new Shutdown(password.getBytes(StandardCharsets.UTF_8));
+
+                    shutdown = false;
+
+                } else {
+                    shutdown = true;
+
+                    sendText(id, "Send your root password.");
+                }
+
+                break;
+
+            case "reboot":
+                String passwordR = Main.prop.getProperty(Main.rootPasswordKey);
+
+                if(!passwordR.equals(Main.rootPasswordVal)) {
+                    Main.writeFile(usedIDsFile, prop);
+
+                    sendText(id, "Rebooting server");
+
+                    new Reboot(passwordR.getBytes(StandardCharsets.UTF_8));
+
+                    reboot = false;
+
+                } else {
+                    reboot = true;
+
+                    sendText(id, "Send your root password.");
+                }
 
                 break;
 
@@ -164,6 +219,7 @@ public class GetUpdateRun {
 
                 break;
         }
+
     }
 
 }
