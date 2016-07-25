@@ -1,5 +1,6 @@
 package at.michael1011.telegrambot;
 
+import at.michael1011.telegrambot.runnables.ClearIDs;
 import at.michael1011.telegrambot.tasks.GetUpdate;
 import at.michael1011.telegrambot.tasks.InputReader;
 import org.joda.time.DateTime;
@@ -11,10 +12,12 @@ import org.slf4j.impl.SimpleLogger;
 
 import java.io.*;
 import java.util.Properties;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class Main {
 
-    public final static String version = "0.1-alpha";
+    public final static String version = "0.2-alpha";
 
     private static String configName = "config.properties";
 
@@ -29,6 +32,8 @@ public class Main {
 
     public static String userNameKey = "userName";
     public static String userNameVal = "If you want that only your Telegram account can send commands put your username here (without the @ char). I recommend it.";
+
+    private static Timer timer;
 
     public static void main(String[] args) {
         Logger log = LoggerFactory.getILoggerFactory().getLogger(Main.class.getName());
@@ -52,6 +57,17 @@ public class Main {
 
                 new GetUpdate();
                 new InputReader();
+
+                timer = new Timer();
+
+                TimerTask task = new TimerTask() {
+                    @Override
+                    public void run() {
+                        ClearIDs.run();
+                    }
+                };
+
+                timer.schedule(task, 10000, 3600000);
 
                 DateTime date = new DateTime();
 
@@ -85,6 +101,10 @@ public class Main {
             showInstructions();
         }
 
+    }
+
+    public static void cancelTask() {
+        timer.cancel();
     }
 
     private static void showInstructions() {

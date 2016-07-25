@@ -1,3 +1,5 @@
 at/michael1011/telegrambot/commands/Java.class
-at/michael1011/telegrambot/commands/Network.class
+at/michael1011/telegrambot/commands/Cpu.class
+at/michael1011/telegrambot/runnables/ClearIDs.class
 at/michael1011/telegrambot/commands/Version.class
+at/michael1011/telegrambot/Main$1.class

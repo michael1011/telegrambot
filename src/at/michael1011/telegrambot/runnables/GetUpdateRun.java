@@ -19,8 +19,6 @@ public class GetUpdateRun {
                 JSONArray array = js.getJSONArray("result");
 
                 for(int i = 0; i < array.length(); i++) {
-                    // todo: remove update_ids when they are older than 24 hours
-
                     // todo: create help command
 
                     // todo: 'restart' for the Raspberry Pi
@@ -61,13 +59,18 @@ public class GetUpdateRun {
 
                                     break;
 
-                                case "temperature":
-                                case "temp":
-                                    new Temperature(id);
+                                case "cpu":
+                                    new Cpu(id);
 
                                     break;
 
                                 case "ram":
+                                    new Ram(id);
+
+                                    break;
+
+                                case "status":
+                                    new Cpu(id);
                                     new Ram(id);
 
                                     break;

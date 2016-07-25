@@ -7,7 +7,7 @@
 
     <groupId>at.michael1011.telegrambot</groupId>
     <artifactId>TelegramBot</artifactId>
-    <version>0.1-alpha</version>
+    <version>0.2-alpha</version>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -116,8 +116,6 @@
         <outputDirectory>out/raw</outputDirectory>
         <finalName>${project.artifactId}</finalName>
         <sourceDirectory>src</sourceDirectory>
-
-        <testSourceDirectory>src/tests/at/michael1011/telegrambot</testSourceDirectory>
 
     </build>
 

@@ -48,6 +48,7 @@ public class InputReader {
     public static void exit(Boolean exit) {
         timer.cancel();
         GetUpdate.cancelTask();
+        Main.cancelTask();
 
         DateTime date = new DateTime();
 
