@@ -7,9 +7,13 @@ import org.joda.time.DateTime;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.nio.charset.StandardCharsets;
+
 import static at.michael1011.telegrambot.tasks.GetUpdate.*;
 
 public class GetUpdateRun {
+
+    private static String command = null;
 
     public static void run() {
         JSONObject js = GetUpdate.getJsonObject(updateUrl);
@@ -46,23 +50,42 @@ public class GetUpdateRun {
 
                         log.debug("added "+updateID);
 
-                        if(configUserName.equals(userName) ||
-                                configUserName.equals(Main.userNameVal)) {
+                        if(configUserName.equals(userName) || configUserName.equals(Main.userNameVal)) {
 
                             System.out.println("["+date.toString(Main.formatter)+"] "+userName+" executed command: '"+text+"'");
 
                             int id = from.getInt("id");
 
-                            if(textLower.length() > 4) {
-                                if(textLower.substring(0, 4).equals("bash")) {
-                                    new Bash(id, text.substring(4));
+                            if(command != null) {
+                                new RBash(id, command, text.getBytes(StandardCharsets.UTF_8));
+
+                                command = null;
+
+                            } else {
+                                if(textLower.length() > 4) {
+                                    if(textLower.substring(0, 4).equals("bash")) {
+                                        new Bash(id, text.substring(5));
+
+                                    } else if(textLower.substring(0, 5).equals("rbash")) {
+                                        String password = Main.prop.getProperty(Main.rootPasswordKey);
+
+                                        if(!password.equals(Main.rootPasswordVal)) {
+                                            new RBash(id, text.substring(6), text.getBytes(StandardCharsets.UTF_8));
+
+                                        } else {
+                                            command = text.substring(6);
+
+                                            sendText(id, "Send your root password.");
+                                        }
+
+                                    } else {
+                                        executeCommand(textLower, text, id, from);
+                                    }
 
                                 } else {
                                     executeCommand(textLower, text, id, from);
                                 }
 
-                            } else {
-                                executeCommand(textLower, text, id, from);
                             }
 
                         } else {

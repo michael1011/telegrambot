@@ -33,6 +33,9 @@ public class Main {
     public static String userNameKey = "userName";
     public static String userNameVal = "If you want that only your Telegram account can send commands put your username here (without the @ char). I recommend it.";
 
+    public static String rootPasswordKey = "rootPassword";
+    public static String rootPasswordVal = "If you don't insert your root password here you have to send your password via Telegram";
+
     private static Timer timer;
 
     public static void main(String[] args) {
@@ -95,6 +98,7 @@ public class Main {
             prop.setProperty(telegramTokenKey, telegramTokenVal);
             prop.setProperty(autoRestartFileKey, autoRestartFileVal);
             prop.setProperty(userNameKey, userNameVal);
+            prop.setProperty(rootPasswordKey, rootPasswordVal);
 
             writeFile(configName, prop);
 

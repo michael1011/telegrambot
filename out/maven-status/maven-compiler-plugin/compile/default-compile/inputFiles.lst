@@ -9,5 +9,6 @@
 /home/michael/Git/Java/TelegramBot/src/at/michael1011/telegrambot/commands/Hello.java
 /home/michael/Git/Java/TelegramBot/src/at/michael1011/telegrambot/commands/Java.java
 /home/michael/Git/Java/TelegramBot/src/at/michael1011/telegrambot/Main.java
+/home/michael/Git/Java/TelegramBot/src/at/michael1011/telegrambot/commands/Bash.java
 /home/michael/Git/Java/TelegramBot/src/at/michael1011/telegrambot/commands/Restart.java
-/home/michael/Git/Java/TelegramBot/src/at/michael1011/telegrambot/commands/Temperature.java
+/home/michael/Git/Java/TelegramBot/src/at/michael1011/telegrambot/commands/RBash.java
