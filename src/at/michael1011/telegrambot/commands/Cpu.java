@@ -13,6 +13,7 @@ public class Cpu {
         try {
             GetUpdate.sendText(id, "Cpu load: "+getCpuLoad()+"%0ACpu temp: "+String.valueOf(SystemInfo.getCpuTemperature())+" °C");
         } catch (IOException | InterruptedException e) {
+            GetUpdate.sendText(id, e.getCause().toString());
             e.printStackTrace();
         }
     }

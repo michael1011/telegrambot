@@ -118,6 +118,7 @@ public class GetUpdate {
             log.debug(response.toString());
 
         } catch (IOException e) {
+            sendText(id, e.getCause().toString());
             e.printStackTrace();
         }
 

@@ -34,7 +34,8 @@ public class GetUpdateRun {
                         String configUserName = Main.prop.getProperty(Main.userNameKey);
                         String userName = from.getString("username");
 
-                        String text = message.getString("text").toLowerCase();
+                        String text = message.getString("text");
+                        String textLower = text.toLowerCase();
 
                         DateTime date = new DateTime();
 
@@ -52,62 +53,16 @@ public class GetUpdateRun {
 
                             int id = from.getInt("id");
 
-                            switch(text) {
-                                case "hello":
-                                case "hi":
-                                    new Hello(id, from.getString("first_name"));
+                            if(textLower.length() > 4) {
+                                if(textLower.substring(0, 4).equals("bash")) {
+                                    new Bash(id, text.substring(4));
 
-                                    break;
+                                } else {
+                                    executeCommand(textLower, text, id, from);
+                                }
 
-                                case "cpu":
-                                    new Cpu(id);
-
-                                    break;
-
-                                case "ram":
-                                    new Ram(id);
-
-                                    break;
-
-                                case "status":
-                                    new Cpu(id);
-                                    new Ram(id);
-
-                                    break;
-
-                                case "java":
-                                    new Java(id);
-
-                                    break;
-
-                                case "version":
-                                case "v":
-                                    new Version(id);
-
-                                    break;
-
-                                case "exit -telegram":
-                                case "exit -te":
-                                case "close -telegram":
-                                case "close -te":
-                                    Main.writeFile(usedIDsFile, prop);
-
-                                    new Exit(id);
-
-                                    break;
-
-                                case "restart -telegram":
-                                case "restart -te":
-                                    Main.writeFile(usedIDsFile, prop);
-
-                                    new Restart(id);
-
-                                    break;
-
-                                default:
-                                    sendText(id, "Command <b>"+text+"</b> not found. %0AWrite <i>help</i> to get a list of all commands.'");
-
-                                    break;
+                            } else {
+                                executeCommand(textLower, text, id, from);
                             }
 
                         } else {
@@ -126,6 +81,66 @@ public class GetUpdateRun {
 
         finished = true;
 
+    }
+
+    private static void executeCommand(String textLower, String text, int id, JSONObject from) {
+        switch(textLower) {
+            case "hello":
+            case "hi":
+                new Hello(id, from.getString("first_name"));
+
+                break;
+
+            case "cpu":
+                new Cpu(id);
+
+                break;
+
+            case "ram":
+                new Ram(id);
+
+                break;
+
+            case "status":
+                new Cpu(id);
+                new Ram(id);
+
+                break;
+
+            case "java":
+                new Java(id);
+
+                break;
+
+            case "version":
+            case "v":
+                new Version(id);
+
+                break;
+
+            case "exit -telegram":
+            case "exit -te":
+            case "close -telegram":
+            case "close -te":
+                Main.writeFile(usedIDsFile, prop);
+
+                new Exit(id);
+
+                break;
+
+            case "restart -telegram":
+            case "restart -te":
+                Main.writeFile(usedIDsFile, prop);
+
+                new Restart(id);
+
+                break;
+
+            default:
+                sendText(id, "Command <b>"+text+"</b> not found. %0AWrite <i>help</i> to get a list of all commands.'");
+
+                break;
+        }
     }
 
 }
