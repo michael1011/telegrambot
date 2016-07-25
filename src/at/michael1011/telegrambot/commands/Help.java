@@ -8,6 +8,7 @@ public class Help {
         GetUpdate.sendText(id, "List of all commands%0A%0A"+
                 "<b>bash *command*</b>: Executes *command*%0A"+
                 "<b>rbash *command*</b>: Executes *command* as root%0A"+
+                "<b>cpu</b>: Shows information about the cpu"+
                 "<b>exit</b>: Closes this Telegram server%0A"+
                 "<b>hello</b>: Welcome message%0A"+
                 "<b>help</b>: Sends this message%0A"+
