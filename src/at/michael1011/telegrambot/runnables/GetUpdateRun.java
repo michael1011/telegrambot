@@ -125,10 +125,25 @@ public class GetUpdateRun {
     }
 
     private static void executeCommand(String textLower, String text, int id, JSONObject from) {
+        if(text.startsWith("/")) {
+            //noinspection ResultOfMethodCallIgnored
+            text.replaceFirst("/", "");
+        }
+
+        if(textLower.startsWith("/")) {
+            //noinspection ResultOfMethodCallIgnored
+            text.replaceFirst("/", "");
+        }
+
         switch(textLower) {
             case "hello":
             case "hi":
                 new Hello(id, from.getString("first_name"));
+
+                break;
+
+            case "help":
+                new Help(id);
 
                 break;
 
