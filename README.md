@@ -12,3 +12,6 @@ That's it. All other things are optional. Run the jar file again an it will work
 Send your bot the message "hi" for further instructions.
 
 If you want to run your bot in background use [Screen](http://www.computerhope.com/unix/screen.htm).
+
+"AutoRestart.sh" is a restart script for the bot. You can copy it and set it as restart script in the config.
+"AutoRestartUpdate.sh" is the same with an updater.

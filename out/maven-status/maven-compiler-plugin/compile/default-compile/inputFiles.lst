@@ -5,10 +5,13 @@
 /home/michael/Git/Java/TelegramBot/src/at/michael1011/telegrambot/runnables/GetUpdateRun.java
 /home/michael/Git/Java/TelegramBot/src/at/michael1011/telegrambot/tasks/InputReader.java
 /home/michael/Git/Java/TelegramBot/src/at/michael1011/telegrambot/tasks/GetUpdate.java
+/home/michael/Git/Java/TelegramBot/src/at/michael1011/telegrambot/commands/Help.java
+/home/michael/Git/Java/TelegramBot/src/at/michael1011/telegrambot/commands/Shutdown.java
 /home/michael/Git/Java/TelegramBot/src/at/michael1011/telegrambot/commands/Ram.java
-/home/michael/Git/Java/TelegramBot/src/at/michael1011/telegrambot/commands/Hello.java
 /home/michael/Git/Java/TelegramBot/src/at/michael1011/telegrambot/commands/Java.java
+/home/michael/Git/Java/TelegramBot/src/at/michael1011/telegrambot/commands/Hello.java
 /home/michael/Git/Java/TelegramBot/src/at/michael1011/telegrambot/Main.java
 /home/michael/Git/Java/TelegramBot/src/at/michael1011/telegrambot/commands/Bash.java
 /home/michael/Git/Java/TelegramBot/src/at/michael1011/telegrambot/commands/Restart.java
 /home/michael/Git/Java/TelegramBot/src/at/michael1011/telegrambot/commands/RBash.java
+/home/michael/Git/Java/TelegramBot/src/at/michael1011/telegrambot/commands/Reboot.java
