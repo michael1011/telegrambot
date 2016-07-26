@@ -16,7 +16,7 @@ public class Hello {
 
             GetUpdate.sendText(id, "Hello "+userName+"! I am "+result.getString("first_name")+" aka "+
                     result.getString("username")+" your personal Raspberry Pi Bot. " +
-                    "%0AWrite <i>help</i> to get a list of all commands.");
+                    "%0AWrite <i>/help</i> to get a list of all commands.");
 
         } else {
             GetUpdate.sendText(id, "JSONObject not found: "+getMeUrl);

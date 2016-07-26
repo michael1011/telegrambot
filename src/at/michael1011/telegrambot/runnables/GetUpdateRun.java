@@ -15,7 +15,7 @@ public class GetUpdateRun {
 
     private static String command = null;
 
-    private static Boolean shutdown = false, reboot = false;
+    private static Boolean shutdown = false, reboot = false, bash = false, rBash = false;
 
     public static void run() {
         JSONObject js = GetUpdate.getJsonObject(updateUrl);
@@ -56,7 +56,26 @@ public class GetUpdateRun {
 
                             int id = from.getInt("id");
 
-                            if(command != null) {
+                            if(bash) {
+                                new Bash(id, text);
+
+                                bash = false;
+
+                            } else if(rBash) {
+                                String password = Main.prop.getProperty(Main.rootPasswordKey);
+
+                                if(!Main.prop.getProperty(Main.rootPasswordKey).equals(Main.rootPasswordVal)) {
+                                    new RBash(id, text, password.getBytes(StandardCharsets.UTF_8));
+
+                                } else {
+                                    command = text;
+
+                                    sendText(id, "Please your root password.");
+                                }
+
+                                rBash = false;
+
+                            } else if(command != null) {
                                 new RBash(id, command, text.getBytes(StandardCharsets.UTF_8));
 
                                 command = null;
@@ -80,21 +99,21 @@ public class GetUpdateRun {
                                 reboot = false;
 
                             } else {
-                                if(textLower.length() > 4) {
-                                    if(textLower.substring(0, 4).equals("bash")) {
-                                        new Bash(id, text.substring(5));
+                                if(textLower.length() == 5) {
+                                    if(textLower.equals("/bash")) {
+                                        bash = true;
 
-                                    } else if(textLower.substring(0, 5).equals("rbash")) {
-                                        String password = Main.prop.getProperty(Main.rootPasswordKey);
+                                        sendText(id, "Please send the command.");
 
-                                        if(!Main.prop.getProperty(Main.rootPasswordKey).equals(Main.rootPasswordVal)) {
-                                            new RBash(id, text.substring(6), password.getBytes(StandardCharsets.UTF_8));
+                                    } else {
+                                        executeCommand(textLower, text, id, from);
+                                    }
 
-                                        } else {
-                                            command = text.substring(6);
+                                } else if(textLower.length() == 6) {
+                                    if(textLower.equals("/rbash")) {
+                                        rBash = true;
 
-                                            sendText(id, "Send your root password.");
-                                        }
+                                        sendText(id, "Please send the command");
 
                                     } else {
                                         executeCommand(textLower, text, id, from);
@@ -125,71 +144,59 @@ public class GetUpdateRun {
     }
 
     private static void executeCommand(String textLower, String text, int id, JSONObject from) {
-        if(text.startsWith("/")) {
-            //noinspection ResultOfMethodCallIgnored
-            text.replaceFirst("/", "");
-        }
-
-        if(textLower.startsWith("/")) {
-            //noinspection ResultOfMethodCallIgnored
-            text.replaceFirst("/", "");
-        }
-
         switch(textLower) {
-            case "hello":
-            case "hi":
+            case "/hello":
+            case "/start":
                 new Hello(id, from.getString("first_name"));
 
                 break;
 
-            case "help":
+            case "/help":
                 new Help(id);
 
                 break;
 
-            case "cpu":
+            case "/cpu":
                 new Cpu(id);
 
                 break;
 
-            case "ram":
+            case "/ram":
                 new Ram(id);
 
                 break;
 
-            case "status":
+            case "/status":
                 new Cpu(id);
                 new Ram(id);
 
                 break;
 
-            case "java":
+            case "/java":
                 new Java(id);
 
                 break;
 
-            case "version":
-            case "v":
+            case "/version":
                 new Version(id);
 
                 break;
 
-            case "exit":
-            case "close":
+            case "/exit":
                 Main.writeFile(usedIDsFile, prop);
 
                 new Exit(id);
 
                 break;
 
-            case "restart":
+            case "/restart":
                 Main.writeFile(usedIDsFile, prop);
 
                 new Restart(id);
 
                 break;
 
-            case "shutdown":
+            case "/shutdown":
                 String password = Main.prop.getProperty(Main.rootPasswordKey);
 
                 if(!password.equals(Main.rootPasswordVal)) {
@@ -209,7 +216,7 @@ public class GetUpdateRun {
 
                 break;
 
-            case "reboot":
+            case "/reboot":
                 String passwordR = Main.prop.getProperty(Main.rootPasswordKey);
 
                 if(!passwordR.equals(Main.rootPasswordVal)) {
@@ -230,7 +237,7 @@ public class GetUpdateRun {
                 break;
 
             default:
-                sendText(id, "Command <b>"+text+"</b> not found. %0AWrite <i>help</i> to get a list of all commands.'");
+                sendText(id, "Command <b>"+text+"</b> not found. %0AWrite <i>/help</i> to get a list of all commands.");
 
                 break;
         }
