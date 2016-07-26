@@ -25,8 +25,6 @@ public class GetUpdateRun {
                 JSONArray array = js.getJSONArray("result");
 
                 for(int i = 0; i < array.length(); i++) {
-                    // todo: create help command
-
                     JSONObject object = array.getJSONObject(i);
 
                     String updateID = String.valueOf(object.getInt("update_id"));
@@ -99,30 +97,7 @@ public class GetUpdateRun {
                                 reboot = false;
 
                             } else {
-                                if(textLower.length() == 5) {
-                                    if(textLower.equals("/bash")) {
-                                        bash = true;
-
-                                        sendText(id, "Please send the command.");
-
-                                    } else {
-                                        executeCommand(textLower, text, id, from);
-                                    }
-
-                                } else if(textLower.length() == 6) {
-                                    if(textLower.equals("/rbash")) {
-                                        rBash = true;
-
-                                        sendText(id, "Please send the command");
-
-                                    } else {
-                                        executeCommand(textLower, text, id, from);
-                                    }
-
-                                } else {
-                                    executeCommand(textLower, text, id, from);
-                                }
-
+                                executeCommand(textLower, text, id, from);
                             }
 
                         } else {
@@ -145,6 +120,7 @@ public class GetUpdateRun {
 
     private static void executeCommand(String textLower, String text, int id, JSONObject from) {
         switch(textLower) {
+
             case "/hello":
             case "/start":
                 new Hello(id, from.getString("first_name"));
@@ -233,6 +209,20 @@ public class GetUpdateRun {
 
                     sendText(id, "Send your root password.");
                 }
+
+                break;
+
+            case "/bash":
+                bash = true;
+
+                sendText(id, "Please send the command.");
+
+                break;
+
+            case "/rbash":
+                rBash = true;
+
+                sendText(id, "Please send the command");
 
                 break;
 
