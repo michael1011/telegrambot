@@ -93,8 +93,8 @@ public class GetUpdate {
 
     public static void sendText(int id, String text) {
         try {
-            String parameters = ("bot"+Main.token+"/sendMessage?chat_id=IDR&parse_mode=HTML&text=").
-                    replace("IDR" , String.valueOf(id))+
+            String parameters = ("bot"+Main.token+"/sendMessage?chat_id=IDR&parse_mode=HTML&text=")
+                    .replace("IDR" , String.valueOf(id))+
                     text.replaceAll("\\s", "%20");
 
             URL post = new URL("https://api.telegram.org/"+parameters);
@@ -103,7 +103,6 @@ public class GetUpdate {
 
             postCon.setRequestMethod("POST");
             postCon.setDoOutput(true);
-
 
             BufferedReader in = new BufferedReader(new InputStreamReader(postCon.getInputStream()));
             String inputLine;

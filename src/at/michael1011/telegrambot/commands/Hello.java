@@ -15,8 +15,8 @@ public class Hello {
             JSONObject result = object.getJSONObject("result");
 
             GetUpdate.sendText(id, "Hello "+userName+"! I am "+result.getString("first_name")+" aka "+
-                    result.getString("username")+" your personal Raspberry Pi Bot. " +
-                    "%0AWrite <i>/help</i> to get a list of all commands.");
+                    result.getString("username")+" your personal Raspberry Pi Bot. "+
+                    "%0AWrite /help to get a list of all commands.");
 
         } else {
             GetUpdate.sendText(id, "JSONObject not found: "+getMeUrl);

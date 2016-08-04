@@ -14,4 +14,5 @@
 /home/michael/Git/Java/TelegramBot/src/at/michael1011/telegrambot/commands/Bash.java
 /home/michael/Git/Java/TelegramBot/src/at/michael1011/telegrambot/commands/Restart.java
 /home/michael/Git/Java/TelegramBot/src/at/michael1011/telegrambot/commands/RBash.java
+/home/michael/Git/Java/TelegramBot/src/at/michael1011/telegrambot/commands/Get.java
 /home/michael/Git/Java/TelegramBot/src/at/michael1011/telegrambot/commands/Reboot.java

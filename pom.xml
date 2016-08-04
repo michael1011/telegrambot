@@ -15,15 +15,21 @@
 
     <dependencies>
         <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-simple</artifactId>
-            <version>1.7.21</version>
-        </dependency>
-
-        <dependency>
             <groupId>org.json</groupId>
             <artifactId>json</artifactId>
             <version>20160212</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpmime</artifactId>
+            <version>4.5.2</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.pi4j</groupId>
+            <artifactId>pi4j-core</artifactId>
+            <version>1.0</version>
         </dependency>
 
         <dependency>
@@ -33,9 +39,9 @@
         </dependency>
 
         <dependency>
-            <groupId>com.pi4j</groupId>
-            <artifactId>pi4j-core</artifactId>
-            <version>1.0</version>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-simple</artifactId>
+            <version>1.7.21</version>
         </dependency>
 
         <dependency>

@@ -7,4 +7,5 @@ at/michael1011/telegrambot/commands/Shutdown.class
 at/michael1011/telegrambot/commands/Bash.class
 at/michael1011/telegrambot/commands/Version.class
 at/michael1011/telegrambot/commands/Reboot.class
+at/michael1011/telegrambot/commands/Get.class
 at/michael1011/telegrambot/Main$1.class

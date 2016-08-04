@@ -6,19 +6,19 @@ public class Help {
 
     public Help(int id) {
         GetUpdate.sendText(id, "List of all commands%0A%0A"+
-                "<b>/bash *command*</b>: Executes *command*%0A"+
-                "<b>/rbash *command*</b>: Executes *command* as root%0A"+
-                "<b>/cpu</b>: Shows information about the cpu%0A"+
-                "<b>/exit</b>: Closes this Telegram bot%0A"+
-                "<b>/hello</b>: Welcome message%0A"+
-                "<b>/help</b>: Sends this message%0A"+
-                "<b>/java</b>: Shows information about the java runtime%0A"+
-                "<b>/ram</b>: Shows information about the ram usage%0A"+
-                "<b>/reboot</b>: Reboots the Raspberry Pi%0A"+
-                "<b>/restart</b>: Restarts the Telegram bot (uses the sh file from the config)%0A"+
-                "<b>/shutdown</b>: Shuts the Raspberry Pi down%0A"+
-                "<b>/status</b>: Shows /ram and /cpu%0A"+
-                "<b>/version</b>: Shows the version of the Telegram bot");
+                "/bash - Executes a command%0A"+
+                "/rbash - Executes a command as root%0A"+
+                "/cpu - Shows information about the cpu%0A"+
+                "/exit - Closes this Telegram bot%0A"+
+                "/hello - Welcome message%0A"+
+                "/help - Sends this message%0A"+
+                "/java - Shows information about the java runtime%0A"+
+                "/ram - Shows information about the ram usage%0A"+
+                "/reboot - Reboots the Raspberry Pi%0A"+
+                "/restart - Restarts the Telegram bot (uses the sh file from the config)%0A"+
+                "/shutdown - Shuts the Raspberry Pi down%0A"+
+                "/status - Shows /ram and /cpu%0A"+
+                "/version - Shows the version of the Telegram bot");
     }
 
 }

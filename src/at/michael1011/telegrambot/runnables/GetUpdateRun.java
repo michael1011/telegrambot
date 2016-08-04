@@ -2,6 +2,7 @@ package at.michael1011.telegrambot.runnables;
 
 import at.michael1011.telegrambot.Main;
 import at.michael1011.telegrambot.commands.*;
+import at.michael1011.telegrambot.commands.Shutdown;
 import at.michael1011.telegrambot.tasks.GetUpdate;
 import org.joda.time.DateTime;
 import org.json.JSONArray;
@@ -50,11 +51,12 @@ public class GetUpdateRun {
 
                         if(configUserName.equals(userName) || configUserName.equals(Main.userNameVal)) {
 
-                            System.out.println("["+date.toString(Main.formatter)+"] "+userName+" executed command: '"+text+"'");
+                            System.out.println("["+date.toString(Main.formatter)+"] "+userName+" sent message: '"+text+"'");
 
                             int id = from.getInt("id");
 
                             if(bash) {
+
                                 new Bash(id, text);
 
                                 bash = false;
@@ -227,7 +229,7 @@ public class GetUpdateRun {
                 break;
 
             default:
-                sendText(id, "Command <b>"+text+"</b> not found. %0AWrite <i>/help</i> to get a list of all commands.");
+                sendText(id, "Command <b>"+text+"</b> not found. %0AWrite /help to get a list of all commands.");
 
                 break;
         }
